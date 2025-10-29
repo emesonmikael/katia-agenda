@@ -1,13 +1,1355 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>katia-agenda</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kátia Manicure e Pedicure – Agendamento Online</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { 
+        background: linear-gradient(135deg, #fff0f5 0%, #ffe6f2 100%); 
+        color: #333; 
+        min-height: 100vh;
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23ff99d6" opacity="0.1" d="M30,30 Q50,10 70,30 T90,50 T70,70 T50,90 T30,70 T10,50 T30,30 Z"/></svg>');
+        background-size: 200px 200px;
+    }
+
+    /* ======== CABEÇALHO ======== */
+    header {
+        background: linear-gradient(90deg, #ff66b3 0%, #ff99d6 100%);
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        color: white;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .logo-container {
+        text-align: left;
+        flex: 1;
+    }
+
+    .logo {
+        font-size: 1.6em;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .slogan {
+        font-size: 0.9em;
+        opacity: 0.9;
+    }
+
+    header button {
+        background-color: rgb(194, 27, 152);
+        color: #f5eff2;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 0.9em;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: bold;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        white-space: nowrap;
+    }
+
+    header button:hover {
+        background-color: #f0f0f0;
+        transform: scale(1.05);
+    }
+
+    .container { 
+        padding: 30px 20px; 
+        max-width: 500px; 
+        margin: auto; 
+    }
+
+    .card {
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #ff66b3 0%, #ff99d6 100%);
+    }
+
+    .card h2 { 
+        margin-bottom: 20px; 
+        color: #ff66b3;
+        text-align: center;
+        font-size: 1.6em;
+    }
+    
+    label { 
+        display: block; 
+        margin-bottom: 8px; 
+        font-weight: 600;
+        color: #555;
+    }
+    
+    input, select, textarea {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        font-size: 1em;
+        transition: 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: #ff99d6;
+        box-shadow: 0 0 0 3px rgba(255, 153, 214, 0.2);
+        outline: none;
+    }
+
+    input[type="submit"], button {
+        background: linear-gradient(90deg, #ff66b3 0%, #ff99d6 100%);
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+        border-radius: 10px;
+        padding: 14px 20px;
+        font-size: 1.1em;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    input[type="submit"]:hover, button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(255, 102, 179, 0.3);
+    }
+
+    .secondary-btn {
+        background: #6c757d !important;
+    }
+
+    .secondary-btn:hover {
+        background: #5a6268 !important;
+    }
+
+    .success-btn {
+        background: #28a745 !important;
+    }
+
+    .success-btn:hover {
+        background: #218838 !important;
+    }
+
+    .danger-btn {
+        background: #dc3545 !important;
+    }
+
+    .danger-btn:hover {
+        background: #c82333 !important;
+    }
+
+    .whatsapp-btn {
+        background: #25D366 !important;
+    }
+
+    .whatsapp-btn:hover {
+        background: #128C7E !important;
+    }
+
+    .clean-btn {
+        background: #ff6b6b !important;
+    }
+
+    .clean-btn:hover {
+        background: #ee5a5a !important;
+    }
+
+    .success {
+        background: #e8f7ef;
+        color: #2d8f5a;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+        border-left: 4px solid #2d8f5a;
+    }
+
+    .error {
+        background: #fde8e8;
+        color: #c53030;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+        border-left: 4px solid #c53030;
+    }
+
+    .info {
+        background: #e8f4ff;
+        color: #2c5aa0;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+        border-left: 4px solid #2c5aa0;
+    }
+
+    .warning {
+        background: #fff3cd;
+        color: #856404;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+        border-left: 4px solid #ffc107;
+    }
+
+    /* ====== CARDS EM LISTA ====== */
+    .agendamentos-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .agendamento-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-left: 4px solid #ff66b3;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .agendamento-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .agendamento-card.status-pendente {
+        border-left-color: #ffc107;
+    }
+
+    .agendamento-card.status-confirmado {
+        border-left-color: #28a745;
+    }
+
+    .agendamento-card.status-cancelado {
+        border-left-color: #dc3545;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+
+    .cliente-info h4 {
+        margin: 0 0 5px 0;
+        color: #333;
+        font-size: 1.1em;
+    }
+
+    .telefone {
+        color: #666;
+        font-size: 0.9em;
+    }
+
+    .card-content {
+        margin-bottom: 15px;
+    }
+
+    .info-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 10px;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        font-size: 0.9em;
+    }
+
+    .info-item i {
+        color: #ff66b3;
+        width: 16px;
+    }
+
+    .card-actions {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+
+    .card-actions button {
+        padding: 8px 12px;
+        font-size: 0.8em;
+        width: auto;
+        margin: 0;
+        flex: 1;
+        min-width: 100px;
+    }
+
+    .card-footer {
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+        text-align: center;
+    }
+
+    .card-footer small {
+        color: #888;
+        font-size: 0.8em;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 40px 20px;
+        color: #666;
+    }
+
+    .no-data h3 {
+        margin: 15px 0 10px 0;
+        color: #333;
+    }
+
+    .admin-tools {
+        margin: 25px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 1px solid #e9ecef;
+    }
+
+    .admin-tools h3 {
+        margin-bottom: 15px;
+        color: #ff66b3;
+        text-align: center;
+    }
+
+    .tool-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .tool-buttons button {
+        width: auto;
+        padding: 10px 20px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .loading {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        color: #777;
+        font-size: 0.9em;
+        margin-top: 40px;
+    }
+
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+
+    .status-pendente {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-confirmado {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-cancelado {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .sync-status {
+        font-size: 0.8em;
+        padding: 4px 8px;
+        border-radius: 10px;
+        margin-left: 10px;
+    }
+
+    .sync-online {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .sync-offline {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .clean-confirm {
+        background: #fff3cd;
+        border: 2px solid #ffc107;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .clean-confirm-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 15px;
+    }
+
+    .clean-confirm-buttons button {
+        width: auto;
+        padding: 10px 20px;
+    }
+
+    .service-icon {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .service-icon i {
+        font-size: 3em;
+        color: #ff66b3;
+        margin-bottom: 10px;
+    }
+
+    /* Ajustes para mobile */
+    @media (max-width: 600px) {
+        .header-content {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .logo-container {
+            text-align: center;
+        }
+        
+        header button {
+            width: 100%;
+        }
+        
+        .container {
+            padding: 15px;
+        }
+        
+        .card {
+            padding: 20px;
+        }
+        
+        .tool-buttons {
+            flex-direction: column;
+        }
+        
+        .tool-buttons button {
+            width: 100%;
+        }
+        
+        .info-row {
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .card-actions {
+            flex-direction: column;
+        }
+        
+        .card-actions button {
+            width: 100%;
+        }
+        
+        .card-header {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .status-badge {
+            align-self: flex-start;
+        }
+
+        .clean-confirm-buttons {
+            flex-direction: column;
+        }
+
+        .clean-confirm-buttons button {
+            width: 100%;
+        }
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <div class="logo-container">
+            <div class="logo">Kátia Manicure e Pedicure</div>
+            <div class="slogan">Cuidando da sua beleza com carinho</div>
+        </div>
+        <button id="admin-btn">
+            <i class="fas fa-user-shield"></i> Área Administrativa
+        </button>
+    </div>
+</header>
+
+<!-- ====== TELA CLIENTE ====== -->
+<div class="container" id="cliente-container">
+    <div class="card">
+        <div class="service-icon">
+            <i class="fas fa-spa"></i>
+        </div>
+        <h2>Agendar Horário</h2>
+        
+        <div class="info">
+            <strong>Como funciona:</strong> Preencha o formulário abaixo para agendar seu horário!
+            <span id="sync-status-client" class="sync-status sync-online">✓ Online</span>
+        </div>
+        
+        <form id="agendamento-form">
+            <label for="nome"><i class="fas fa-user"></i> Nome Completo:</label>
+            <input type="text" id="nome" required placeholder="Seu nome completo">
+            
+            <label for="telefone"><i class="fas fa-phone"></i> Telefone/WhatsApp:</label>
+            <input type="tel" id="telefone" required placeholder="(XX) XXXXX-XXXX">
+            
+            <label for="servico"><i class="fas fa-concierge-bell"></i> Serviço Desejado:</label>
+            <select id="servico" required>
+                <option value="">Selecione o serviço</option>
+                <option value="Manicure">Manicure - R$ 15,00</option>
+                <option value="Pedicure">Pedicure - R$ 20,00</option>
+                <option value="Manicure e Pedicure">Manicure + Pedicure - R$ 35,00</option>
+                <option value="Alongamento">Alongamento de unhas - R$ 60,00</option>
+                <option value="Manutenção">Manutenção de alongamento - R$ 40,00</option>
+                <option value="Outro">Outro serviço</option>
+            </select>
+
+            <label for="data"><i class="fas fa-calendar"></i> Data Desejada:</label>
+            <input type="date" id="data" required>
+            
+            <label for="horario"><i class="fas fa-clock"></i> Horário Preferencial:</label>
+            <select id="horario" required>
+                <option value="">Selecione um horário</option>
+                <option value="08:00">08:00</option>
+                <option value="09:00">09:00</option>
+                <option value="10:00">10:00</option>
+                <option value="11:00">11:00</option>
+                <option value="13:00">13:00</option>
+                <option value="14:00">14:00</option>
+                <option value="15:00">15:00</option>
+                <option value="16:00">16:00</option>
+            </select>
+
+            <label for="observacoes"><i class="fas fa-sticky-note"></i> Observações (opcional):</label>
+            <textarea id="observacoes" rows="3" placeholder="Alguma observação especial..."></textarea>
+
+            <input type="submit" value="📅 Solicitar Agendamento">
+        </form>
+        
+        <div class="success hidden" id="success-msg">
+            <strong>Agendamento solicitado com sucesso!</strong><br>
+            Em breve entraremos em contato para confirmar seu horário.
+        </div>
+        
+        <div class="error hidden" id="error-msg">
+            Ocorreu um erro ao enviar sua solicitação. Tente novamente ou entre em contato diretamente pelo WhatsApp.
+        </div>
+    </div>
+</div>
+
+<!-- ====== PAINEL ADMIN ====== -->
+<div class="container hidden" id="admin-container">
+    <div class="card">
+        <form id="login-form">
+            <h2><i class="fas fa-lock"></i> Acesso Administrativo</h2>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" required placeholder="Digite a senha de acesso">
+            <input type="submit" value="🔑 Entrar no Painel">
+        </form>
+
+        <div class="error hidden" id="login-error">
+            Senha incorreta. Tente novamente.
+        </div>
+    </div>
+
+    <div class="card hidden" id="admin-panel">
+        <h2><i class="fas fa-tachometer-alt"></i> Painel de Agendamentos 
+            <span id="sync-status-admin" class="sync-status sync-online">✓ Online</span>
+        </h2>
+        
+        <div class="admin-tools">
+            <h3><i class="fas fa-tools"></i> Ferramentas de Gestão</h3>
+            <div class="tool-buttons">
+                <button id="atualizar-lista"><i class="fas fa-sync"></i> Atualizar Lista</button>
+                <button id="exportar-dados"><i class="fas fa-download"></i> Exportar Dados</button>
+                <button id="sincronizar-dados"><i class="fas fa-cloud-upload-alt"></i> Sincronizar Tudo</button>
+                <button id="limpar-dados" class="clean-btn"><i class="fas fa-trash"></i> Limpar Tudo</button>
+            </div>
+        </div>
+
+        <!-- Área de confirmação para limpar dados -->
+        <div class="clean-confirm hidden" id="clean-confirm">
+            <h4><i class="fas fa-exclamation-triangle"></i> ATENÇÃO!</h4>
+            <p>Tem certeza que deseja <strong>APAGAR TODOS OS DADOS</strong>?</p>
+            <p>Esta ação não pode ser desfeita e irá remover:</p>
+            <ul style="text-align: left; margin: 10px 0;">
+                <li>Todos os agendamentos salvos localmente</li>
+                <li>Todos os dados do navegador</li>
+                <li>O histórico completo</li>
+            </ul>
+            <div class="clean-confirm-buttons">
+                <button id="confirmar-limpeza" class="danger-btn">
+                    <i class="fas fa-check"></i> SIM, APAGAR TUDO
+                </button>
+                <button id="cancelar-limpeza" class="secondary-btn">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+            </div>
+        </div>
+
+        <div class="loading hidden" id="loading-agendamentos">
+            <i class="fas fa-spinner fa-spin"></i> Carregando agendamentos...
+        </div>
+        
+        <div id="lista-agendamentos">
+            <!-- OS CARDS SERÃO INSERIDOS AQUI PELO JAVASCRIPT -->
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div style="margin-bottom: 10px;">
+        <i class="fas fa-phone" style="color: #ff66b3;"></i> 
+        (84) 981349185 • 
+        <i class="fas fa-map-marker-alt" style="color: #ff66b3;"></i> 
+        Sitio Vaca Morta
+    </div>
+    Kátia Manicure e Pedicure • Atendimento com qualidade e carinho
+</footer>
+
+<script>
+// ====== CONFIGURAÇÃO DO GOOGLE SHEETS ======
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfwiJ8d1kba1JjWNGZDiRsmu2RMfq9Mw9ORwXnoiK7wLa5nGWgwwZ0-LN8N6l4pilR/exec';
+
+// ====== CONFIGURAÇÕES ======
+const ADMIN_PASSWORD = "katia123";
+const WHATSAPP_NUMBER = "5511999999999"; // SUBSTITUA pelo seu número com DDD
+let agendamentos = [];
+let isOnline = true;
+
+// ====== ELEMENTOS DA INTERFACE ======
+const clienteContainer = document.getElementById('cliente-container');
+const adminContainer = document.getElementById('admin-container');
+const adminPanel = document.getElementById('admin-panel');
+const loginForm = document.getElementById('login-form');
+const agendamentoForm = document.getElementById('agendamento-form');
+const successMsg = document.getElementById('success-msg');
+const errorMsg = document.getElementById('error-msg');
+const loginError = document.getElementById('login-error');
+const loadingAgendamentos = document.getElementById('loading-agendamentos');
+const contadorAgendamentos = document.getElementById('contador-agendamentos');
+const syncStatusClient = document.getElementById('sync-status-client');
+const syncStatusAdmin = document.getElementById('sync-status-admin');
+const cleanConfirm = document.getElementById('clean-confirm');
+const limparDadosBtn = document.getElementById('limpar-dados');
+const confirmarLimpezaBtn = document.getElementById('confirmar-limpeza');
+const cancelarLimpezaBtn = document.getElementById('cancelar-limpeza');
+
+// ====== INICIALIZAÇÃO ======
+document.addEventListener('DOMContentLoaded', function() {
+    // Configurar data mínima como hoje
+    const dataInput = document.getElementById('data');
+    const hoje = new Date();
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const ano = hoje.getFullYear();
+    dataInput.min = `${ano}-${mes}-${dia}`;
+
+    // Desabilitar fins de semana
+    dataInput.addEventListener('change', function() {
+        const selectedDate = new Date(this.value);
+        const dayOfWeek = selectedDate.getDay();
+        
+        if (dayOfWeek === 0 || dayOfWeek === 6) {
+            alert('Atendimento apenas de segunda a sexta. Por favor, selecione outro dia.');
+            this.value = '';
+        }
+    });
+
+    // Testar conexão com Google Sheets
+    testarConexao();
+    
+    // Carregar agendamentos iniciais
+    carregarAgendamentosLocal();
+});
+
+// ====== FUNÇÕES PRINCIPAIS ======
+
+// Botão Administração
+document.getElementById('admin-btn').addEventListener('click', () => {
+    clienteContainer.classList.add('hidden');
+    adminContainer.classList.remove('hidden');
+    adminPanel.classList.add('hidden');
+    loginForm.reset();
+    loginError.classList.add('hidden');
+});
+
+// Login admin
+loginForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const senha = document.getElementById('senha').value;
+    
+    if(senha === ADMIN_PASSWORD) {
+        loginForm.classList.add('hidden');
+        adminPanel.classList.remove('hidden');
+        loginError.classList.add('hidden');
+        carregarAgendamentosAdmin();
+    } else {
+        loginError.classList.remove('hidden');
+    }
+});
+
+// Formulário de agendamento
+agendamentoForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    
+    const agendamento = {
+        id: Date.now().toString(),
+        nome: document.getElementById('nome').value,
+        telefone: document.getElementById('telefone').value,
+        servico: document.getElementById('servico').value,
+        data: document.getElementById('data').value,
+        horario: document.getElementById('horario').value,
+        observacoes: document.getElementById('observacoes').value,
+        timestamp: new Date().toISOString(),
+        status: 'Pendente'
+    };
+    
+    try {
+        // Salvar localmente primeiro (sempre funciona)
+        agendamentos.push(agendamento);
+        salvarAgendamentosLocal();
+        
+        // Tentar salvar online
+        if (isOnline) {
+            await salvarAgendamentoOnline(agendamento);
+            mostrarMensagem('Agendamento salvo online com sucesso!', 'success');
+        } else {
+            mostrarMensagem('Agendamento salvo localmente (modo offline)', 'warning');
+        }
+        
+        agendamentoForm.reset();
+        
+    } catch (erro) {
+        console.error('Erro ao salvar agendamento:', erro);
+        mostrarMensagem('Agendamento salvo localmente. Erro ao conectar com servidor.', 'warning');
+    }
+});
+
+// ====== FUNÇÕES DE LIMPEZA DE DADOS ======
+
+limparDadosBtn.addEventListener('click', () => {
+    cleanConfirm.classList.remove('hidden');
+});
+
+confirmarLimpezaBtn.addEventListener('click', () => {
+    // Limpar dados locais
+    agendamentos = [];
+    localStorage.removeItem('agendamentosKatia');
+    
+    // Limpar dados online (se possível)
+    if (isOnline) {
+        // Aqui você pode adicionar uma função para limpar o Google Sheets também
+        console.log('Dados online mantidos por segurança');
+    }
+    
+    // Atualizar interface
+    atualizarTabelaAgendamentos();
+    cleanConfirm.classList.add('hidden');
+    
+    mostrarMensagem('Todos os dados locais foram apagados com sucesso!', 'success');
+});
+
+cancelarLimpezaBtn.addEventListener('click', () => {
+    cleanConfirm.classList.add('hidden');
+});
+
+// ====== FUNÇÕES DO GOOGLE SHEETS ======
+
+async function testarConexao() {
+    try {
+        const response = await fetch(GOOGLE_SCRIPT_URL + '?action=test');
+        if (response.ok) {
+            isOnline = true;
+            atualizarStatusConexao('✓ Online', 'sync-online');
+        } else {
+            throw new Error('Servidor não respondeu');
+        }
+    } catch (erro) {
+        isOnline = false;
+        atualizarStatusConexao('⚠ Offline', 'sync-offline');
+        console.log('Modo offline ativado. Dados salvos localmente.');
+    }
+}
+
+async function salvarAgendamentoOnline(agendamento) {
+    if (!isOnline) return;
+    
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+            action: 'add',
+            data: agendamento
+        })
+    });
+    
+    if (!response.ok) {
+        throw new Error('Erro ao salvar online');
+    }
+    
+    return await response.json();
+}
+
+async function carregarAgendamentosOnline() {
+    if (!isOnline) {
+        throw new Error('Sem conexão');
+    }
+    
+    const response = await fetch(GOOGLE_SCRIPT_URL + '?action=get');
+    if (!response.ok) {
+        throw new Error('Erro ao carregar dados online');
+    }
+    
+    const data = await response.json();
+    console.log('Dados recebidos do Google Sheets:', data);
+    
+    // CORREÇÃO: Processar os dados corretamente
+    let agendamentosProcessados = [];
+    
+    if (data && data.data && data.data.agendamentos) {
+        agendamentosProcessados = data.data.agendamentos;
+    } else if (data && data.agendamentos) {
+        agendamentosProcessados = data.agendamentos;
+    } else if (Array.isArray(data)) {
+        agendamentosProcessados = data;
+    } else {
+        console.error('Estrutura de dados inesperada:', data);
+        return [];
+    }
+    
+    // CORREÇÃO: Formatar datas corretamente
+    return agendamentosProcessados.map(agendamento => ({
+        id: agendamento.id || '',
+        nome: agendamento.nome || '',
+        telefone: agendamento.telefone ? agendamento.telefone.toString() : '',
+        servico: agendamento.servico || '',
+        data: formatarDataParaInput(agendamento.data),
+        horario: formatarHorario(agendamento.horario),
+        observacoes: agendamento.observacoes || '',
+        status: agendamento.status || 'Pendente',
+        timestamp: agendamento.timestamp || new Date().toISOString()
+    }));
+}
+
+async function atualizarStatusOnline(agendamentoId, novoStatus) {
+    if (!isOnline) return;
+    
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+            action: 'update',
+            id: agendamentoId,
+            status: novoStatus
+        })
+    });
+    
+    return response.ok;
+}
+
+// ====== FUNÇÕES DE FORMATAÇÃO ======
+
+function formatarDataParaInput(dataString) {
+    if (!dataString) return '';
+    
+    try {
+        // Se já estiver no formato YYYY-MM-DD, retorna direto
+        if (/^\d{4}-\d{2}-\d{2}$/.test(dataString)) {
+            return dataString;
+        }
+        
+        // Se for uma data completa, extrai apenas a parte da data
+        const data = new Date(dataString);
+        if (isNaN(data.getTime())) {
+            return '';
+        }
+        
+        const ano = data.getFullYear();
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const dia = String(data.getDate()).padStart(2, '0');
+        
+        return `${ano}-${mes}-${dia}`;
+    } catch (e) {
+        console.error('Erro ao formatar data:', e);
+        return '';
+    }
+}
+
+function formatarHorario(horarioString) {
+    if (!horarioString) return '';
+    
+    try {
+        // Se já estiver no formato HH:MM, retorna direto
+        if (/^\d{2}:\d{2}$/.test(horarioString)) {
+            return horarioString;
+        }
+        
+        // Se for uma data/hora completa, extrai apenas o horário
+        const data = new Date(horarioString);
+        if (isNaN(data.getTime())) {
+            return '';
+        }
+        
+        const horas = String(data.getHours()).padStart(2, '0');
+        const minutos = String(data.getMinutes()).padStart(2, '0');
+        
+        return `${horas}:${minutos}`;
+    } catch (e) {
+        console.error('Erro ao formatar horário:', e);
+        return '';
+    }
+}
+
+function formatarData(dataString) {
+    if (!dataString) return 'N/A';
+    try {
+        const data = new Date(dataString + 'T00:00:00');
+        return data.toLocaleDateString('pt-BR');
+    } catch (e) {
+        return dataString;
+    }
+}
+
+function formatarDataHora(dataString) {
+    if (!dataString) return 'N/A';
+    try {
+        const data = new Date(dataString);
+        return data.toLocaleString('pt-BR');
+    } catch (e) {
+        return dataString;
+    }
+}
+
+// ====== FUNÇÃO WHATSAPP ======
+
+function enviarWhatsApp(agendamento, confirmacao = true) {
+    // Formatar telefone (remover caracteres não numéricos)
+    const telefone = agendamento.telefone.replace(/\D/g, '');
+    
+    let mensagem = '';
+    
+    if (confirmacao) {
+        mensagem = `Olá ${agendamento.nome}! 😊%0A%0A` +
+                  `*CONFIRMAÇÃO DE AGENDAMENTO*%0A` +
+                  `Seu agendamento foi *CONFIRMADO*!%0A%0A` +
+                  `📅 *Data:* ${formatarData(agendamento.data)}%0A` +
+                  `⏰ *Horário:* ${agendamento.horario}%0A` +
+                  `💅 *Serviço:* ${agendamento.servico}%0A%0A` +
+                  `*Local:* [Sua Localização]%0A` +
+                  `*Valor:* [Valor do serviço]%0A%0A` +
+                  `Por favor, chegue 5 minutos antes do horário.%0A` +
+                  `Estou ansiosa para te atender! 💖%0A%0A` +
+                  `Atenciosamente,%0A*Kátia Manicure e Pedicure*`;
+    } else {
+        mensagem = `Olá ${agendamento.nome}!%0A%0A` +
+                  `Infelizmente preciso *CANCELAR* seu agendamento de ${formatarData(agendamento.data)} às ${agendamento.horario}.%0A%0A` +
+                  `Peço desculpas pelo inconveniente. Posso reagendar para outro horário?%0A%0A` +
+                  `Atenciosamente,%0A*Kátia Manicure e Pedicure*`;
+    }
+    
+    const url = `https://wa.me/${telefone}?text=${mensagem}`;
+    window.open(url, '_blank');
+}
+
+// ====== FUNÇÕES LOCAIS ======
+
+function carregarAgendamentosLocal() {
+    const dados = localStorage.getItem('agendamentosKatia');
+    if (dados) {
+        try {
+            agendamentos = JSON.parse(dados);
+        } catch (e) {
+            console.error('Erro ao carregar agendamentos:', e);
+            agendamentos = [];
+        }
+    }
+}
+
+function salvarAgendamentosLocal() {
+    try {
+        localStorage.setItem('agendamentosKatia', JSON.stringify(agendamentos));
+    } catch (e) {
+        console.error('Erro ao salvar agendamentos:', e);
+    }
+}
+
+// ====== FUNÇÕES DO PAINEL ADMIN ======
+
+async function carregarAgendamentosAdmin() {
+    loadingAgendamentos.classList.remove('hidden');
+    
+    try {
+        if (isOnline) {
+            // Tentar carregar do servidor online
+            const dadosOnline = await carregarAgendamentosOnline();
+            console.log('Dados online carregados:', dadosOnline);
+            
+            if (dadosOnline && dadosOnline.length > 0) {
+                agendamentos = dadosOnline;
+                salvarAgendamentosLocal();
+                mostrarMensagem('Dados sincronizados do servidor!', 'success');
+            }
+        }
+        
+        // CORREÇÃO: Garantir que a função existe e é chamada
+        if (typeof atualizarTabelaAgendamentos === 'function') {
+            atualizarTabelaAgendamentos();
+        } else {
+            console.error('Função atualizarTabelaAgendamentos não encontrada');
+        }
+        
+    } catch (erro) {
+        console.error('Erro ao carregar online:', erro);
+        // Usar dados locais em caso de erro
+        carregarAgendamentosLocal();
+        
+        if (typeof atualizarTabelaAgendamentos === 'function') {
+            atualizarTabelaAgendamentos();
+        }
+        
+        mostrarMensagem('Usando dados locais. Sem conexão com servidor.', 'warning');
+    }
+    
+    loadingAgendamentos.classList.add('hidden');
+}
+
+function atualizarTabelaAgendamentos() {
+    const listaAgendamentos = document.getElementById('lista-agendamentos');
+    const contadorElement = document.getElementById('contador-agendamentos');
+    
+    // CORREÇÃO: Verificar se o elemento existe antes de usar
+    if (contadorElement) {
+        const total = agendamentos.length;
+        const pendentes = agendamentos.filter(a => a.status === 'Pendente').length;
+        contadorElement.innerHTML = `
+            <i class="fas fa-chart-bar"></i> 
+            <strong>Total:</strong> ${total} agendamentos | 
+            <strong>Pendentes:</strong> ${pendentes} |
+            <strong>Confirmados:</strong> ${total - pendentes}
+            ${!isOnline ? ' | <span style="color: #856404;"><i class="fas fa-wifi"></i> Modo Offline</span>' : ''}
+        `;
+    }
+    
+    if (agendamentos.length === 0) {
+        listaAgendamentos.innerHTML = `
+            <div class="no-data">
+                <i class="fas fa-calendar-times" style="font-size: 3em; color: #ccc; margin-bottom: 15px;"></i>
+                <h3>Nenhum agendamento encontrado</h3>
+                <p>Quando houver agendamentos, eles aparecerão aqui.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Ordenar por data (mais recentes primeiro)
+    agendamentos.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    let html = '<div class="agendamentos-grid">';
+    
+    agendamentos.forEach(agendamento => {
+        const isPendente = (agendamento.status || 'Pendente') === 'Pendente';
+        const statusClass = `status-${(agendamento.status || 'Pendente').toLowerCase()}`;
+        
+       html += `
+    <div class="agendamento-card ${statusClass}">
+        <div class="card-header">
+            <div class="cliente-info">
+                <h4><i class="fas fa-user"></i> ${agendamento.nome || 'N/A'}</h4>
+                <span class="telefone"><i class="fas fa-phone"></i> ${agendamento.telefone || 'N/A'}</span>
+            </div>
+            <div class="status-badge ${statusClass}">
+                ${agendamento.status || 'Pendente'}
+            </div>
+        </div>
+        
+        <div class="card-content">
+            <div class="info-row">
+                <div class="info-item">
+                    <i class="fas fa-concierge-bell"></i>
+                    <span>${agendamento.servico || 'N/A'}</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>${formatarData(agendamento.data) || 'N/A'}</span>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <span>${agendamento.horario || 'N/A'}</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>${agendamento.observacoes || 'Sem observações'}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-actions">
+            ${isPendente ? `
+                <button onclick="confirmarAgendamento('${agendamento.id}')" class="success-btn">
+                    <i class="fas fa-check"></i> Confirmar
+                </button>
+            ` : ''}
+            <button onclick="enviarWhatsApp(${JSON.stringify(agendamento).replace(/"/g, '&quot;')}, ${!isPendente})" class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </button>
+            <button onclick="alterarStatus('${agendamento.id}', 'cancelado')" class="danger-btn">
+                <i class="fas fa-times"></i> ${isPendente ? 'Recusar' : 'Cancelar'}
+            </button>
+        </div>
+        
+        <div class="card-footer">
+            <small><i class="fas fa-history"></i> Solicitado em: ${formatarDataHora(agendamento.timestamp)}</small>
+        </div>
+    </div>
+`;
+
+    });
+    
+    html += '</div>';
+    listaAgendamentos.innerHTML = html;
+}
+
+async function confirmarAgendamento(id) {
+    console.log('Confirmando agendamento ID:', id);
+    
+    // CORREÇÃO: Converter ID para string para garantir a comparação
+    const idString = id.toString();
+    
+    const agendamento = agendamentos.find(a => {
+        const agendamentoId = a.id ? a.id.toString() : '';
+        return agendamentoId === idString;
+    });
+    
+    if (agendamento) {
+        console.log('Agendamento encontrado:', agendamento);
+        
+        agendamento.status = 'Confirmado';
+        
+        // Salvar localmente
+        salvarAgendamentosLocal();
+        
+        // Tentar salvar online
+        if (isOnline) {
+            try {
+                const sucesso = await atualizarStatusOnline(idString, 'Confirmado');
+                if (sucesso) {
+                    console.log('Status atualizado online com sucesso');
+                    mostrarMensagem('Status atualizado no Google Sheets!', 'success');
+                }
+            } catch (erro) {
+                console.error('Erro ao salvar online:', erro);
+                mostrarMensagem('Erro ao atualizar Google Sheets, mas salvo localmente.', 'warning');
+            }
+        }
+        
+        // Atualizar interface
+        atualizarTabelaAgendamentos();
+        
+        // Abrir WhatsApp para enviar confirmação
+        enviarWhatsApp(agendamento, true);
+        
+        mostrarMensagem(`Agendamento de ${agendamento.nome} confirmado! WhatsApp aberto.`, 'success');
+    } else {
+        console.error('Agendamento não encontrado para ID:', idString);
+        mostrarMensagem('Erro: Agendamento não encontrado', 'error');
+    }
+}
+
+
+
+async function alterarStatus(id, novoStatus) {
+    console.log('Alterando status do agendamento ID:', id);
+    
+    // CORREÇÃO: Converter ID para string para garantir a comparação
+    const idString = id.toString();
+    
+    const agendamento = agendamentos.find(a => {
+        const agendamentoId = a.id ? a.id.toString() : '';
+        return agendamentoId === idString;
+    });
+    
+    if (agendamento) {
+        const statusAntigo = agendamento.status;
+        agendamento.status = novoStatus === 'confirmado' ? 'Confirmado' : 'Cancelado';
+        
+        // Salvar localmente
+        salvarAgendamentosLocal();
+        
+        // Tentar salvar online
+        if (isOnline) {
+            try {
+                await atualizarStatusOnline(idString, agendamento.status);
+            } catch (erro) {
+                console.error('Erro ao salvar online:', erro);
+            }
+        }
+        
+        atualizarTabelaAgendamentos();
+        
+        // Se foi cancelado, abrir WhatsApp para notificar
+        if (novoStatus === 'cancelado') {
+            enviarWhatsApp(agendamento, false);
+        }
+        
+        mostrarMensagem(`Status de ${agendamento.nome} alterado para ${agendamento.status}`, 'success');
+    } else {
+        console.error('Agendamento não encontrado para alteração de status:', idString);
+    }
+}
+
+// Botão atualizar lista
+document.getElementById('atualizar-lista').addEventListener('click', () => {
+    carregarAgendamentosAdmin();
+});
+
+// Botão exportar dados
+document.getElementById('exportar-dados').addEventListener('click', () => {
+    if (agendamentos.length === 0) {
+        alert('Não há agendamentos para exportar.');
+        return;
+    }
+    
+    const dadosParaExportar = {
+        agendamentos: agendamentos,
+        dataExportacao: new Date().toISOString(),
+        total: agendamentos.length
+    };
+    
+    const dadosString = JSON.stringify(dadosParaExportar, null, 2);
+    const blob = new Blob([dadosString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `agendamentos-katia-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    alert('Dados exportados com sucesso!');
+});
+
+// Botão sincronizar dados
+document.getElementById('sincronizar-dados').addEventListener('click', async () => {
+    if (!isOnline) {
+        alert('Sem conexão com a internet. Não é possível sincronizar.');
+        return;
+    }
+    
+    try {
+        loadingAgendamentos.classList.remove('hidden');
+        
+        // Enviar todos os dados locais para o servidor
+        for (const agendamento of agendamentos) {
+            await salvarAgendamentoOnline(agendamento);
+        }
+        
+        // Recarregar do servidor para garantir sincronização
+        const dadosOnline = await carregarAgendamentosOnline();
+        if (dadosOnline && dadosOnline.length > 0) {
+            agendamentos = dadosOnline;
+            salvarAgendamentosLocal();
+        }
+        
+        atualizarTabelaAgendamentos();
+        mostrarMensagem('Sincronização completa! Todos os dados estão atualizados.', 'success');
+        
+    } catch (erro) {
+        console.error('Erro na sincronização:', erro);
+        mostrarMensagem('Erro na sincronização. Verifique a conexão.', 'error');
+    } finally {
+        loadingAgendamentos.classList.add('hidden');
+    }
+});
+
+// ====== FUNÇÕES AUXILIARES ======
+
+function mostrarMensagem(mensagem, tipo) {
+    // Limpar mensagens anteriores
+    successMsg.classList.add('hidden');
+    errorMsg.classList.add('hidden');
+    
+    const elemento = tipo === 'success' ? successMsg : 
+                    tipo === 'error' ? errorMsg : null;
+    
+    if (elemento) {
+        elemento.textContent = mensagem;
+        elemento.classList.remove('hidden');
+        
+        setTimeout(() => {
+            elemento.classList.add('hidden');
+        }, 5000);
+    }
+}
+
+function atualizarStatusConexao(texto, classe) {
+    syncStatusClient.textContent = texto;
+    syncStatusClient.className = 'sync-status ' + classe;
+    syncStatusAdmin.textContent = texto;
+    syncStatusAdmin.className = 'sync-status ' + classe;
+}
+</script>
+
+</body>
 </html>
